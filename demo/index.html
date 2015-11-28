@@ -14,13 +14,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>paper-controls Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="slideshow-element.html">
+    <link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+    <link rel="import" href="gradient-slideshow.html">
   </head>
   <body unresolved>
-
-    <slideshow-element>
-      
-    </slideshow-element>
+    <style is="custom-style">
+      .wrapper {
+        @apply(--layout-horizontal);
+        @apply(--layout-fit);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+      }
+    </style>
+    <div class="wrapper">
+      <gradient-slideshow selected="1">
+        <div></div>
+        <div></div>
+        <div></div>
+      </gradient-slideshow>
+    </div>
 
   </body>
 </html>
