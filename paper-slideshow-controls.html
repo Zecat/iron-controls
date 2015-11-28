@@ -33,8 +33,10 @@ Example:
         pointer-events: auto;
       }
     </style>
-    <paper-icon-button icon="icons:chevron-left" on-tap="previous"></paper-icon-button>
-    <paper-icon-button icon="icons:chevron-right" on-tap="next"></paper-icon-button>
+    <template is="dom-if" if="[[arrows]]">
+      <paper-icon-button icon="icons:chevron-left" on-tap="previous"></paper-icon-button>
+      <paper-icon-button icon="icons:chevron-right" on-tap="next"></paper-icon-button>
+    </template>
   </template>
 
 </dom-module>
@@ -46,7 +48,13 @@ Example:
     is: 'paper-slideshow-controls',
 
     properties: {
-
+      /**
+       * If true, display arrows controls
+       */
+      arrows: {
+        type: Boolean,
+        value: false
+      }
     },
 
     next: function() {
