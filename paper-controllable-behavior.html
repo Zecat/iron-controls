@@ -1,0 +1,19 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-selector/iron-selectable.html">
+
+<script>
+
+  window.Zecat = window.Zecat || {};
+
+  Zecat.PaperControllableBehaviorImpl = {
+    listeners: {
+      'next-control': 'selectNext',
+      'previous-control': 'selectPrevious',
+    }
+  };
+
+  Zecat.PaperControllableBehavior = [
+    Polymer.IronSelectableBehavior,
+    Zecat.PaperControllableBehaviorImpl
+  ];
+</script>
