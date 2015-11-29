@@ -1,7 +1,7 @@
 <link rel="import" href="../../iron-selector/iron-selectable.html">
 <link rel="import" href="../../polymer/polymer.html">
-<link rel="import" href="../paper-controllable-behavior.html">
-<link rel="import" href="../paper-slideshow-controls.html">
+<link rel="import" href="../iron-controllable-behavior.html">
+<link rel="import" href="../iron-slideshow-controls.html">
 
 
 
@@ -10,7 +10,7 @@
     <style>
       :host {
         display: block;
-        /* Required because <paper-slideshow-controls> use fit layout */
+        /* Required because <iron-slideshow-controls> use fit layout */
         position: relative;
         height: 200px;
         width: 400px;
@@ -35,13 +35,14 @@
     <div id="slides">
       <content></content>
     </div>
-    <paper-slideshow-controls arrows></paper-slideshow-controls>
+    <iron-slideshow-controls arrows></iron-slideshow-controls>
   </template>
   <script>
     Polymer({
       is: 'gradient-slideshow',
       behaviors: [
-        Zecat.PaperControllableBehavior
+        Polymer.IronSelectableBehavior,
+        Zecat.IronControllableBehavior
       ]
     });
   </script>
