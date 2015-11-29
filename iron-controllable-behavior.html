@@ -7,7 +7,7 @@
   Zecat.IronControllableBehavior = {
     properties: {
       /**
-       * If set, controllable will listen for this event from childs
+       * If set, controllable will listen for this event
        * and once a control is used, every other are disabled until
        * this event is recieved.
        */
@@ -16,16 +16,14 @@
         value: '',
         observer: '_controlsAwaitForEventChange'
       },
+      /**
+       * If true, controls are disabled.
+       */
       controlsDisabled: {
         type: Boolean,
         value: false,
         notify: true
       }
-    },
-
-    listeners: {
-      'next-control': 'nextControl',
-      'previous-control': 'previousControl',
     },
 
     disableControls: function() {
@@ -35,31 +33,22 @@
     eneableControls: function() {
       this.controlsDisabled = false;
     },
-    
-    nextControl: function() {
-      if (!this.controlsDisabled) {
-        if(this.controlsAwaitForEvent) {
-          this.controlsDisabled = true;
-        }
-        this.selectNext();
-      }
-    },
 
-    previousControl: function() {
-      if (!this.controlsDisabled) {
-        if(this.controlsAwaitForEvent) {
-          this.controlsDisabled = true;
-        }
-        this.selectPrevious();
+    useControl: function() {
+      if (this.controlsDisabled) {
+        return false;
       }
+      if (this.controlsAwaitForEvent) {
+        this.controlsDisabled = true;
+      }
+      return true;
     },
 
     _controlsAwaitForEventChange: function(eventName, old) {
       this.unlisten(this, old, 'eneableControls');
-      if(!eventName) {
-        return;
+      if(eventName) {
+        this.listen(this, eventName, 'eneableControls');
       }
-      this.listen(this, eventName, 'eneableControls');
     },
 
   };
