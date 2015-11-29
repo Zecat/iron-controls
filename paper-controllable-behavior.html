@@ -1,21 +1,24 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-selector/iron-selectable.html">
 
 <script>
 
   window.Zecat = window.Zecat || {};
 
-  Zecat.PaperControllableBehaviorImpl = {
+  Zecat.PaperControllableBehavior = {
     properties: {
-      waitEvent: {
+      /**
+       * If set, controllable will listen for this event from childs
+       * and once a control is used, every other are disabled until
+       * this event is recieved.
+       */
+      controlsAwaitForEvent: {
         type: String,
         value: '',
-        observer: '_waitEventChange'
+        observer: '_controlsAwaitForEventChange'
       },
-      waiting: {
+      controlsDisabled: {
         type: Boolean,
         value: false,
-        readOnly: true,
         notify: true
       }
     },
@@ -24,44 +27,41 @@
       'next-control': 'nextControl',
       'previous-control': 'previousControl',
     },
+
+    disableControls: function() {
+      this.controlsDisabled = true;
+    },
+
+    eneableControls: function() {
+      this.controlsDisabled = false;
+    },
     
     nextControl: function() {
-      if ( this._tryUseControl() ) {
+      if (!this.controlsDisabled) {
+        if(this.controlsAwaitForEvent) {
+          this.controlsDisabled = true;
+        }
         this.selectNext();
       }
     },
 
     previousControl: function() {
-      if ( this._tryUseControl() ) {
+      if (!this.controlsDisabled) {
+        if(this.controlsAwaitForEvent) {
+          this.controlsDisabled = true;
+        }
         this.selectPrevious();
       }
     },
 
-    _tryUseControl: function() {
-      if (this.waitEvent) {
-        if (this.waiting) {
-          return false;
-        }
-        this._setWaiting(true);
-      }
-      return true;
-    },
-
-    _waitEventChange: function(eventName, old) {
-      this.unlisten(this, old, '_waitNoLonger');
+    _controlsAwaitForEventChange: function(eventName, old) {
+      this.unlisten(this, old, 'eneableControls');
       if(!eventName) {
         return;
       }
-      this.listen(this, eventName, '_waitNoLonger');
+      this.listen(this, eventName, 'eneableControls');
     },
 
-    _waitNoLonger: function() {
-      this._setWaiting(false);
-    }
   };
-
-  Zecat.PaperControllableBehavior = [
-    Polymer.IronSelectableBehavior,
-    Zecat.PaperControllableBehaviorImpl
-  ];
+  
 </script>
