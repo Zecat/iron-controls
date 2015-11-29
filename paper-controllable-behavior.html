@@ -6,9 +6,57 @@
   window.Zecat = window.Zecat || {};
 
   Zecat.PaperControllableBehaviorImpl = {
+    properties: {
+      waitEvent: {
+        type: String,
+        value: '',
+        observer: '_waitEventChange'
+      },
+      waiting: {
+        type: Boolean,
+        value: false,
+        readOnly: true,
+        notify: true
+      }
+    },
+
     listeners: {
-      'next-control': 'selectNext',
-      'previous-control': 'selectPrevious',
+      'next-control': 'nextControl',
+      'previous-control': 'previousControl',
+    },
+    
+    nextControl: function() {
+      if ( this._tryUseControl() ) {
+        this.selectNext();
+      }
+    },
+
+    previousControl: function() {
+      if ( this._tryUseControl() ) {
+        this.selectPrevious();
+      }
+    },
+
+    _tryUseControl: function() {
+      if (this.waitEvent) {
+        if (this.waiting) {
+          return false;
+        }
+        this._setWaiting(true);
+      }
+      return true;
+    },
+
+    _waitEventChange: function(eventName, old) {
+      this.unlisten(this, old, '_waitNoLonger');
+      if(!eventName) {
+        return;
+      }
+      this.listen(this, eventName, '_waitNoLonger');
+    },
+
+    _waitNoLonger: function() {
+      this._setWaiting(false);
     }
   };
 
